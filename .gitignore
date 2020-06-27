@@ -3,3 +3,7 @@ test*
 setup.py
 wrs-temp/
 *.pdf
+dist/
+build/
+*egg-info/
+temp*.py
