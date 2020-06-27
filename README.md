@@ -43,7 +43,9 @@ with WeRead(headless_driver) as weread:
     weread.scan2pdf('https://weread.qq.com/web/reader/2c632ef071a486a92c60226')
 ```
 
-![]()
+扫描结果样例：
+
+![](https://github.com/Algebra-FUN/WeReadScan/blob/master/example/sample.png?raw=true)
 
 几点说明：
 
