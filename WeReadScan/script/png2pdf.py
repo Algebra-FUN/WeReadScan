@@ -11,7 +11,7 @@ import numpy as np
 from PIL import Image
 
 
-def png2jpg(file_name, binary_threshold=95, quality=90):
+def png2jpg(file_name, binary_threshold=95, quality=95):
     img = cv2.imdecode(np.fromfile(f'{file_name}.png', dtype=np.uint8), -1)
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     retval, dst = cv2.threshold(gray, binary_threshold, 255, cv2.THRESH_BINARY)

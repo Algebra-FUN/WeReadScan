@@ -127,7 +127,7 @@ class WeRead:
          - binary_threshold=95:
                 threshold of scan binary
                 二值化处理的阈值
-         - quality=90:
+         - quality=95:
                 quality of scan pdf
                 扫描PDF的质量
          - show_output=True:
@@ -183,7 +183,7 @@ class WeRead:
             self.shot_full_displayed_element(context, f'{png_name}.png')
 
             # png2bin-jpg
-            jpg_name = png2jpg(png_name, binary_threshold=95, quality=85)
+            jpg_name = png2jpg(png_name, binary_threshold=95, quality=95)
             jpg_name_list.append(jpg_name)
             print(f'save chapter scan {jpg_name}')
             sleep(1)
