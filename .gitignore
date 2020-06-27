@@ -1,0 +1,5 @@
+__pycache__
+test*
+setup.py
+wrs-temp/
+*.pdf
