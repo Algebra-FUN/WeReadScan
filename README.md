@@ -103,7 +103,7 @@ WeReadScan.WeRead.scan2pdf(self, book_url, save_at='.', binary_threshold=95, qua
 
 | 参数名           | 类型 | 默认值 | 描述                                    |
 | ---------------- | ---- | ------ | --------------------------------------- |
-| book_url         | str  | 必填   | 扫描目标书籍的ULR                       |
+| book_url         | str  | 必填   | 扫描目标书籍的URL                       |
 | save_at          | str  | '.'    | 保存地址                                |
 | binary_threshold | int  | 95     | 二值化处理的阈值                        |
 | quality          | int  | 95     | 扫描PDF的质量                           |
