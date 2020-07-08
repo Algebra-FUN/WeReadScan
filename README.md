@@ -16,7 +16,6 @@
 
 ```
 pip install WeReadScan
-pip install selenium
 ```
 
 > 本项目需要使用selenium，需要对selenium具备基础的了解

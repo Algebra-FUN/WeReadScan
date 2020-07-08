@@ -46,7 +46,7 @@ class WeRead:
         clear_temp('wrs-temp')
 
     def S(self, selector):
-        return WebDriverWait(self.driver, 10).until(lambda driver: driver.find_element_by_css_selector(selector))
+        return WebDriverWait(self.driver, 60).until(lambda driver: driver.find_element_by_css_selector(selector))
 
     def full_display(self):
         width = self.driver.execute_script(
@@ -109,7 +109,7 @@ class WeRead:
         self.S('button.catalog').click()
         self.S('li.chapterItem:nth-child(2)').click()
 
-    def scan2pdf(self, book_url, save_at='.', binary_threshold=95, quality=90, show_output=True):
+    def scan2pdf(self, book_url, save_at='.', binary_threshold=100, quality=95, show_output=True):
         """
         scan `weread` book to pdf and save offline.
 
@@ -171,7 +171,7 @@ class WeRead:
             self.shot_full_displayed_element(context, f'{png_name}.png')
 
             # png2bin-jpg
-            jpg_name = png2jpg(png_name, binary_threshold=95, quality=90)
+            jpg_name = png2jpg(png_name, binary_threshold, quality)
             jpg_name_list.append(jpg_name)
             print(f'save chapter scan {jpg_name}')
 
