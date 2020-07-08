@@ -23,4 +23,4 @@ print('Webdriver launched.')
 
 with WeRead(driver) as weread:
     weread.login()
-    weread.scan2pdf('https://weread.qq.com/web/reader/2c632ef071a486a92c60226')
+    weread.scan2pdf('https://weread.qq.com/web/reader/1f132bb071a1a7861f14eb4')

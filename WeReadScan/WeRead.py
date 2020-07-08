@@ -4,11 +4,9 @@ Copyright 2020 by Algebra-FUN
 ALL RIGHTS RESERVED.
 '''
 
-
-from time import sleep
-
 from matplotlib import pyplot as plt
 from PIL import Image
+from selenium.webdriver.support.wait import WebDriverWait
 
 from .script import jpg2pdf, png2jpg, dir_check, os_start_file, clear_temp
 
@@ -44,8 +42,11 @@ class WeRead:
     def __enter__(self):
         return self
 
-    def __exit__(self,*args):
+    def __exit__(self, *args):
         clear_temp('wrs-temp')
+
+    def S(self, selector):
+        return WebDriverWait(self.driver, 10).until(lambda driver: driver.find_element_by_css_selector(selector))
 
     def full_display(self):
         width = self.driver.execute_script(
@@ -76,10 +77,9 @@ class WeRead:
         dir_check('wrs-temp')
 
         # get QRCode for Login
-        self.driver.find_element_by_css_selector(
-            'button.navBar_link_Login').click()
-        self.driver.find_element_by_css_selector(
-            '.login_dialog_qrcode>img').screenshot('wrs-temp/login_qrcode.png')
+        self.S('button.navBar_link_Login').click()
+        self.S('.login_dialog_qrcode>img').screenshot(
+            'wrs-temp/login_qrcode.png')
 
         login_qrcode = Image.open('wrs-temp/login_qrcode.png')
         plt.ion()
@@ -106,10 +106,8 @@ class WeRead:
 
     def switch_to_context(self):
         """switch to main body of the book"""
-        self.driver.find_element_by_css_selector('button.catalog').click()
-        sleep(1)
-        self.driver.find_element_by_css_selector(
-            'li.chapterItem:nth-child(2)').click()
+        self.S('button.catalog').click()
+        self.S('li.chapterItem:nth-child(2)').click()
 
     def scan2pdf(self, book_url, save_at='.', binary_threshold=95, quality=90, show_output=True):
         """
@@ -140,20 +138,18 @@ class WeRead:
         print('Task launching...')
 
         # valid the url
-        if not 'https://weread.qq.com/web/reader/' in book_url:
+        if 'https://weread.qq.com/web/reader/' not in book_url:
             raise Exception('WeRead.UrlError: Wrong url format.')
 
         # switch to target book url
         self.driver.get(book_url)
         print(f'navigate to {book_url}')
-        sleep(2)
 
         # switch to target book's cover
         self.switch_to_context()
 
         # get the name of the book
-        book_name = self.driver.find_element_by_css_selector(
-            'span.readerTopBar_title_link').text
+        book_name = self.S('span.readerTopBar_title_link').text
         print(f'preparing to scan "{book_name}"')
 
         # check the dir for future save
@@ -163,35 +159,25 @@ class WeRead:
         jpg_name_list = []
 
         while True:
-            sleep(1)
-
-            # loop to get chapter
-            while True:
-                chapter = self.driver.find_element_by_css_selector(
-                    'span.readerTopBar_title_chapter').text
-                if chapter:
-                    break
-                sleep(1)
+            # get chapter
+            chapter = self.S('span.readerTopBar_title_chapter').text
             print(f'scanning chapter "{chapter}"')
 
             # locate the renderTargetContainer
-            context = self.driver.find_element_by_css_selector(
-                'div.renderTargetContainer')
+            context = self.S('div.renderTargetContainer')
 
             # context_scan2png
             png_name = f'wrs-temp/{book_name}/context/{chapter}'
             self.shot_full_displayed_element(context, f'{png_name}.png')
 
             # png2bin-jpg
-            jpg_name = png2jpg(png_name, binary_threshold=95, quality=95)
+            jpg_name = png2jpg(png_name, binary_threshold=95, quality=90)
             jpg_name_list.append(jpg_name)
             print(f'save chapter scan {jpg_name}')
-            sleep(1)
 
             # go to next chapter
             try:
-                self.driver.find_element_by_css_selector(
-                    'button[title="下一章"]').click()
+                self.S('button[title="下一章"]').click()
             except Exception:
                 break
 
