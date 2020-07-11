@@ -1,6 +1,6 @@
 # WeReadScan
 
-![GitHub last commit](https://img.shields.io/github/last-commit/Algebra-FUN/WeReadScan?style=flat-square) ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/Algebra-FUN/WeReadScan?style=flat-square) ![GitHub top language](https://img.shields.io/github/languages/top/Algebra-FUN/WeReadScan?style=flat-square)![pip](https://img.shields.io/badge/pip-0.6.7-blue)
+![GitHub last commit](https://img.shields.io/github/last-commit/Algebra-FUN/WeReadScan?style=flat-square) ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/Algebra-FUN/WeReadScan?style=flat-square) ![GitHub top language](https://img.shields.io/github/languages/top/Algebra-FUN/WeReadScan?style=flat-square)![pip](https://img.shields.io/badge/pip-0.6.7-orange?style=flat-square)
 
 ## About
 
