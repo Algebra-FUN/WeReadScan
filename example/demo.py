@@ -9,6 +9,7 @@ ALL RIGHTS RESERVED.
 from selenium.webdriver import Chrome, ChromeOptions
 
 from WeReadScan import WeRead
+import numpy as np
 
 # options
 chrome_options = ChromeOptions()

@@ -7,6 +7,7 @@ ALL RIGHTS RESERVED.
 from matplotlib import pyplot as plt
 from PIL import Image
 from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.remote.webdriver import WebDriver
 
 from .script import jpg2pdf, png2jpg, dir_check, os_start_file, clear_temp
 
@@ -34,10 +35,10 @@ class WeRead:
             weread = WeRead(headless_driver)
     """
 
-    def __init__(self, headless_driver):
+    def __init__(self, headless_driver: WebDriver):
         headless_driver.get('https://weread.qq.com/')
         headless_driver.implicitly_wait(5)
-        self.driver = headless_driver
+        self.driver: WebDriver = headless_driver
 
     def __enter__(self):
         return self
@@ -122,7 +123,7 @@ class WeRead:
          - save_at='.':
                 the path of where to save
                 保存地址
-         - binary_threshold=95:
+         - binary_threshold=100:
                 threshold of scan binary
                 二值化处理的阈值
          - quality=95:
