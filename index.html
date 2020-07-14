@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Wereadscan by Algebra-FUN</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Wereadscan</h1>
+      <h2 class="project-tagline">扫描“微信读书”已购图书并下载本地PDF的爬虫</h2>
+      <a href="https://github.com/Algebra-FUN/WeReadScan" class="btn">View on GitHub</a>
+      <a href="https://github.com/Algebra-FUN/WeReadScan/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/Algebra-FUN/WeReadScan/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="wereadscan" class="anchor" href="#wereadscan" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>WeReadScan</h1>
+<p><a href="https://app.codacy.com/manual/Algebra-FUN/WeReadScan?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Algebra-FUN/WeReadScan&amp;utm_campaign=Badge_Grade_Dashboard"><img src="https://api.codacy.com/project/badge/Grade/c00b1cc6fa3245668bbda64584479f9d" alt="Codacy Badge"></a> <img src="https://img.shields.io/github/last-commit/Algebra-FUN/WeReadScan" alt="GitHub last commit"> <img src="https://img.shields.io/github/languages/code-size/Algebra-FUN/WeReadScan" alt="GitHub code size in bytes"> <img src="https://img.shields.io/github/languages/top/Algebra-FUN/WeReadScan" alt="GitHub top language"> <a href="https://pypi.org/project/WeReadScan/"><img src="https://img.shields.io/badge/pip-0.6.7-orange" alt="pip"></a></p>
+<h2>
+<a id="about" class="anchor" href="#about" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>About</h2>
+<p>一个用于的将<code>微信读书</code>上的图书扫描转换本地PDF的爬虫库.</p>
+<h3>
+<a id="谈谈为何而开发" class="anchor" href="#%E8%B0%88%E8%B0%88%E4%B8%BA%E4%BD%95%E8%80%8C%E5%BC%80%E5%8F%91" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>谈谈为何而开发</h3>
+<p>不得不说，“微信读书”是一个很好的平台。但是美中不足很明显，用户购买了图书资源，但是只能在“微信读书”的Application中阅读或者做一些文字批注╮(╯▽╰)╭，这些功能相较于购买的纸质书籍显然是不足的。比如，作者就习惯于用iPad的相关notebook类app做笔记，而“微信读书”并没有适配pencil做handwriting笔记的功能。</p>
+<p>因此，既然“微信读书”没有提供，那只好自己解决了。于是，经过2天的开发，终于有了这个爬虫脚本，也可以开心地做手写笔记了o(<em>￣▽￣</em>)ブ</p>
+<h2>
+<a id="get-started" class="anchor" href="#get-started" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Get started</h2>
+<div class="highlight highlight-source-shell"><pre>pip install WeReadScan</pre></div>
+<blockquote>
+<p>本项目需要使用selenium，需要对selenium具备基础的了解</p>
+</blockquote>
+<h3>
+<a id="demo" class="anchor" href="#demo" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Demo</h3>
+<p>话不多说，直接上代码</p>
+<div class="highlight highlight-source-python"><pre><span class="pl-k">from</span> <span class="pl-s1">selenium</span>.<span class="pl-s1">webdriver</span> <span class="pl-k">import</span> <span class="pl-v">Chrome</span>, <span class="pl-v">ChromeOptions</span>
+<span class="pl-k">from</span> <span class="pl-v">WeReadScan</span> <span class="pl-k">import</span> <span class="pl-v">WeRead</span>
+
+<span class="pl-c"># 重要！为webdriver设置headless</span>
+<span class="pl-s1">chrome_options</span> <span class="pl-c1">=</span> <span class="pl-v">ChromeOptions</span>()
+<span class="pl-s1">chrome_options</span>.<span class="pl-en">add_argument</span>(<span class="pl-s">'--headless'</span>)
+
+<span class="pl-c"># 启动webdriver(--headless)</span>
+<span class="pl-s1">headless_driver</span> <span class="pl-c1">=</span> <span class="pl-v">Chrome</span>(<span class="pl-s1">chrome_options</span><span class="pl-c1">=</span><span class="pl-s1">chrome_options</span>)
+
+<span class="pl-k">with</span> <span class="pl-v">WeRead</span>(<span class="pl-s1">headless_driver</span>) <span class="pl-k">as</span> <span class="pl-s1">weread</span>:
+    <span class="pl-c"># 重要！登陆</span>
+    <span class="pl-s1">weread</span>.<span class="pl-en">login</span>()
+    <span class="pl-c"># 爬去指定url对应的图书资源并保存到当前文件夹</span>
+    <span class="pl-s1">weread</span>.<span class="pl-en">scan2pdf</span>(<span class="pl-s">'https://weread.qq.com/web/reader/2c632ef071a486a92c60226'</span>)</pre></div>
+<p>扫描结果样例：</p>
+<p><img src="https://github.com/Algebra-FUN/WeReadScan/blob/master/example/sample.png?raw=true" alt=""></p>
+<p>几点说明：</p>
+<ol>
+<li>webdriver 需要 <code>无头(headless)</code> 模式启动</li>
+<li>只有登陆后，才能扫描完整的图书资源；若不登陆，也可以扫描部分无需解锁的部分</li>
+</ol>
+<h2>
+<a id="api-reference" class="anchor" href="#api-reference" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>API Reference</h2>
+<h3>
+<a id="weread" class="anchor" href="#weread" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>WeRead</h3>
+<p>WeReadScan.WeRead(headless_driver)</p>
+<p><code>微信读书</code>网页代理，用于图书扫描</p>
+<h4>
+<a id="args" class="anchor" href="#args" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Args</h4>
+<ul>
+<li>headless_driver:	设置了headless的Webdriver示例</li>
+</ul>
+<h4>
+<a id="returns" class="anchor" href="#returns" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Returns</h4>
+<ul>
+<li>WeReadInstance</li>
+</ul>
+<h4>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h4>
+<div class="highlight highlight-source-python"><pre><span class="pl-s1">chrome_options</span> <span class="pl-c1">=</span> <span class="pl-v">ChromeOptions</span>()
+<span class="pl-s1">chrome_options</span>.<span class="pl-en">add_argument</span>(<span class="pl-s">'--headless'</span>)
+<span class="pl-s1">headless_driver</span> <span class="pl-c1">=</span> <span class="pl-v">Chrome</span>(<span class="pl-s1">chrome_options</span><span class="pl-c1">=</span><span class="pl-s1">chrome_options</span>)
+<span class="pl-s1">weread</span> <span class="pl-c1">=</span> <span class="pl-v">WeRead</span>(<span class="pl-s1">headless_driver</span>)</pre></div>
+<h3>
+<a id="login" class="anchor" href="#login" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Login</h3>
+<p>WeReadScan.WeRead.login(wait_turns=15)</p>
+<p>展示二维码以登陆微信读书</p>
+<h4>
+<a id="args-1" class="anchor" href="#args-1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Args</h4>
+<ul>
+<li>wait_turns:	登陆二维码等待扫描的等待轮数</li>
+</ul>
+<h4>
+<a id="usage-1" class="anchor" href="#usage-1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h4>
+<div class="highlight highlight-source-python"><pre><span class="pl-s1">weread</span>.<span class="pl-en">login</span>()</pre></div>
+<h3>
+<a id="scan2pdf" class="anchor" href="#scan2pdf" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Scan2pdf</h3>
+<p>WeReadScan.WeRead.scan2pdf(self, book_url, save_at='.', binary_threshold=95, quality=90, show_output=True)</p>
+<p>扫面<code>微信读书</code>的书籍转换为PDF并保存本地</p>
+<h4>
+<a id="args-2" class="anchor" href="#args-2" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Args</h4>
+<table>
+<thead>
+<tr>
+<th>参数名</th>
+<th>类型</th>
+<th>默认值</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>book_url</td>
+<td>str</td>
+<td>必填</td>
+<td>扫描目标书籍的URL</td>
+</tr>
+<tr>
+<td>save_at</td>
+<td>str</td>
+<td>'.'</td>
+<td>保存地址</td>
+</tr>
+<tr>
+<td>binary_threshold</td>
+<td>int</td>
+<td>95</td>
+<td>二值化处理的阈值</td>
+</tr>
+<tr>
+<td>quality</td>
+<td>int</td>
+<td>95</td>
+<td>扫描PDF的质量</td>
+</tr>
+<tr>
+<td>show_output</td>
+<td>bool</td>
+<td>True</td>
+<td>是否在该方法函数结束时展示生成的PDF文件</td>
+</tr>
+</tbody>
+</table>
+<h4>
+<a id="usage-2" class="anchor" href="#usage-2" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h4>
+<div class="highlight highlight-source-python"><pre><span class="pl-s1">weread</span>.<span class="pl-en">scan2pdf</span>(<span class="pl-s">'https://weread.qq.com/web/reader/a57325c05c8ed3a57224187kc81322c012c81e728d9d180'</span>)</pre></div>
+<h2>
+<a id="disclaimer" class="anchor" href="#disclaimer" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Disclaimer</h2>
+<ul>
+<li>本脚本仅限用于<strong>已购</strong>图书的爬取，用于私人学习目的，禁止用于商业目的和网上资源扩散，尊重微信读书方面的利益</li>
+<li>若User使用该脚本用于不当的目的，责任由使用者承担，作者概不负责</li>
+</ul>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/Algebra-FUN/WeReadScan">Wereadscan</a> is maintained by <a href="https://github.com/Algebra-FUN">Algebra-FUN</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
