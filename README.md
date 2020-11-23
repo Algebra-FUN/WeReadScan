@@ -33,7 +33,7 @@ chrome_options = ChromeOptions()
 chrome_options.add_argument('--headless')
 
 # 启动webdriver(--headless)
-headless_driver = Chrome(chrome_options=chrome_options)
+headless_driver = Chrome(options=chrome_options)
 
 with WeRead(headless_driver) as weread:
     # 重要！登陆

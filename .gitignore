@@ -8,3 +8,4 @@ build/
 *egg-info/
 temp*.py
 *.bat
+test

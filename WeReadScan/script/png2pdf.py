@@ -20,9 +20,9 @@ def png2jpg(file_name, binary_threshold=95, quality=95):
     return f'{file_name}.jpg'
 
 
-def jpg2pdf(file_name, png_name_list):
+def jpg2pdf(file_name, jpg_name_list):
     file_name = f'{file_name}.pdf'
     with open(file_name, 'wb') as f:
-        pdf_bytes = img2pdf.convert(png_name_list)
+        pdf_bytes = img2pdf.convert(jpg_name_list)
         f.write(pdf_bytes)
         print(f'Converted to pdf at {file_name}')
