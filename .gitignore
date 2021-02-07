@@ -9,3 +9,4 @@ build/
 temp*.py
 *.bat
 test
+.vscode

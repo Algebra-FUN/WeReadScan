@@ -109,8 +109,25 @@ class WeRead:
         """switch to main body of the book"""
         self.S('button.catalog').click()
         self.S('li.chapterItem:nth-child(2)').click()
+    
+    def set_font_size(self,font_size_index=1):
+        """
+        set font size
 
-    def scan2pdf(self, book_url, save_at='.', binary_threshold=100, quality=95, show_output=True):
+        设置字体大小
+
+        :Args:
+         - font_size_index=0:
+                the index of font size(1-7)
+                字体大小级别(1-7)
+                In particular, 1 represents minimize, 7 represents maximize
+                特别地，1为最小，7为最大
+        """ 
+        self.S('button.fontSizeButton').click()
+        self.S(f'.vue-slider-mark:nth-child({font_size_index})').click()
+        self.S('.app_content').click()
+
+    def scan2pdf(self, book_url, save_at='.', binary_threshold=100, quality=95, show_output=True, font_size_index=1):
         """
         scan `weread` book to pdf and save offline.
 
@@ -132,6 +149,11 @@ class WeRead:
          - show_output=True:
                 if show the output pdf file at the end of this method
                 是否在该方法函数结束时展示生成的PDF文件
+         - font_size_index=1:
+                the index of font size(1-7)
+                字体大小级别(1-7)
+                In particular, 1 represents minimize, 7 represents maximize
+                特别地，1为最小，7为最大
 
         :Usage:
             weread.scan2pdf('https://weread.qq.com/web/reader/a57325c05c8ed3a57224187kc81322c012c81e728d9d180')
@@ -145,6 +167,9 @@ class WeRead:
         # switch to target book url
         self.driver.get(book_url)
         print(f'navigate to {book_url}')
+
+        # set font size
+        self.set_font_size(font_size_index)
 
         # switch to target book's cover
         self.switch_to_context()
@@ -164,8 +189,8 @@ class WeRead:
             chapter = self.S('span.readerTopBar_title_chapter').text
             print(f'scanning chapter "{chapter}"')
 
-            # locate the renderTargetContainer
-            context = self.S('div.renderTargetContainer')
+            # locate the renderTargetContent
+            context = self.S('div.readerChapterContent')
 
             # context_scan2png
             png_name = f'wrs-temp/{book_name}/context/{chapter}'
@@ -181,6 +206,8 @@ class WeRead:
                 self.S('button[title="下一章"]').click()
             except Exception:
                 break
+
+        print('pdf converting...')
 
         # convert to pdf and save offline
         jpg2pdf(f'{save_at}/{book_name}', jpg_name_list)

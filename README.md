@@ -94,7 +94,7 @@ weread.login()
 
 ### Scan2pdf
 
-WeReadScan.WeRead.scan2pdf(self, book_url, save_at='.', binary_threshold=95, quality=90, show_output=True)
+WeReadScan.WeRead.scan2pdf(self, book_url, save_at='.', binary_threshold=95, quality=90, show_output=True,font_size_index=1)
 
 扫面`微信读书`的书籍转换为PDF并保存本地
 
@@ -107,6 +107,7 @@ WeReadScan.WeRead.scan2pdf(self, book_url, save_at='.', binary_threshold=95, qua
 | binary_threshold | int  | 95   | 二值化处理的阈值              |
 | quality          | int  | 95   | 扫描PDF的质量              |
 | show_output      | bool | True | 是否在该方法函数结束时展示生成的PDF文件 |
+| font_size_index  | int  | 1 | 设置字号大小(对应微信读书字号) |
 
 #### Usage
 
