@@ -15,8 +15,8 @@ def png2jpg(file_name, binary_threshold=95, quality=95):
     img = cv2.imdecode(np.fromfile(f'{file_name}.png', dtype=np.uint8), -1)
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     retval, dst = cv2.threshold(gray, binary_threshold, 255, cv2.THRESH_BINARY)
-    binim = cv2.bitwise_not(dst)
-    Image.fromarray(binim).save(f'{file_name}.jpg', quality=quality)
+    # binim = cv2.bitwise_not(dst)  # color inverse 
+    Image.fromarray(dst).save(f'{file_name}.jpg', quality=quality)
     return f'{file_name}.jpg'
 
 

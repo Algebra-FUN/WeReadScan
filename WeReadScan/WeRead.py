@@ -56,14 +56,17 @@ class WeRead:
 
     def shot_full_canvas_context(self,file_name):
         sleep(1)
-        offsetTop = self.execute_script("return document.querySelector('canvas').offsetTop")
-        height = self.execute_script("return document.querySelector('canvas').height")
+        try:
+            self.__offsetTop = self.execute_script("return document.querySelector('.renderTargetContainer').offsetTop")
+        except Exception:
+            pass
+        height = self.execute_script("return document.querySelector('.renderTargetContainer').offsetHeight")
         width = self.execute_script("return window.outerWidth")
-        height += offsetTop
+        height += self.__offsetTop
         self.driver.set_window_size(width, height)
         sleep(1)
-        canvas = self.S('canvas')
-        canvas.screenshot(file_name)
+        content = self.S('.app_content')
+        content.screenshot(file_name)
 
     def login(self, wait_turns=15):
         """
@@ -134,7 +137,11 @@ class WeRead:
         self.S(f'.vue-slider-mark:nth-child({font_size_index})').click()
         self.S('.app_content').click()
 
-    def scan2pdf(self, book_url, save_at='.', binary_threshold=100, quality=95, show_output=True, font_size_index=1):
+    def turn_light_on(self):
+        sleep(1)
+        self.S('button.readerControls_item.white').click()
+
+    def scan2pdf(self, book_url, save_at='.', binary_threshold=200, quality=95, show_output=True, font_size_index=1):
         """
         scan `weread` book to pdf and save offline.
 
@@ -147,7 +154,7 @@ class WeRead:
          - save_at='.':
                 the path of where to save
                 保存地址
-         - binary_threshold=100:
+         - binary_threshold=200:
                 threshold of scan binary
                 二值化处理的阈值
          - quality=95:
@@ -174,6 +181,9 @@ class WeRead:
         # switch to target book url
         self.driver.get(book_url)
         print(f'navigate to {book_url}')
+
+        # turn theme to light theme
+        self.turn_light_on()
 
         # set font size
         self.set_font_size(font_size_index)
