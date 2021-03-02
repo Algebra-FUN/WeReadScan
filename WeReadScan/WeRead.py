@@ -37,16 +37,18 @@ class WeRead:
             weread = WeRead(headless_driver)
     """
 
-    def __init__(self, headless_driver: WebDriver):
+    def __init__(self, headless_driver: WebDriver, debug=False):
         headless_driver.get('https://weread.qq.com/')
         headless_driver.implicitly_wait(5)
         self.driver: WebDriver = headless_driver
+        self.debug_mode = debug
 
     def __enter__(self):
         return self
 
     def __exit__(self, *args):
-        clear_temp('wrs-temp')
+        if not self.debug_mode:
+            clear_temp('wrs-temp')
 
     def S(self, selector):
         return WebDriverWait(self.driver, 60).until(lambda driver: driver.find_element_by_css_selector(selector))
@@ -58,12 +60,12 @@ class WeRead:
         sleep(1)
         try:
             self.__offsetTop = self.execute_script("return document.querySelector('.renderTargetContainer').offsetTop")
+            self.__offsetHeight = self.execute_script("return document.querySelector('.renderTargetContainer').offsetHeight")
         except Exception:
             pass
-        height = self.execute_script("return document.querySelector('.renderTargetContainer').offsetHeight")
         width = self.execute_script("return window.outerWidth")
-        height += self.__offsetTop
-        self.driver.set_window_size(width, height)
+        self.__offsetHeight += self.__offsetTop
+        self.driver.set_window_size(width, self.__offsetHeight)
         sleep(1)
         content = self.S('.app_content')
         content.screenshot(file_name)
