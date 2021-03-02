@@ -11,6 +11,8 @@ from selenium.webdriver.remote.webdriver import WebDriver
 
 from .script import jpg2pdf, png2jpg, dir_check, os_start_file, clear_temp
 
+from time import sleep
+
 
 class WeRead:
     """
@@ -49,16 +51,19 @@ class WeRead:
     def S(self, selector):
         return WebDriverWait(self.driver, 60).until(lambda driver: driver.find_element_by_css_selector(selector))
 
-    def full_display(self):
-        width = self.driver.execute_script(
-            "return window.outerWidth")
-        height = self.driver.execute_script(
-            "return document.documentElement.scrollHeight")
-        self.driver.set_window_size(width, height)
+    def execute_script(self,script):
+        return self.driver.execute_script(script)
 
-    def shot_full_displayed_element(self, element, file_name):
-        self.full_display()
-        element.screenshot(file_name)
+    def shot_full_canvas_context(self,file_name):
+        sleep(1)
+        offsetTop = self.execute_script("return document.querySelector('canvas').offsetTop")
+        height = self.execute_script("return document.querySelector('canvas').height")
+        width = self.execute_script("return window.outerWidth")
+        height += offsetTop
+        self.driver.set_window_size(width, height)
+        sleep(1)
+        canvas = self.S('canvas')
+        canvas.screenshot(file_name)
 
     def login(self, wait_turns=15):
         """
@@ -123,7 +128,9 @@ class WeRead:
                 In particular, 1 represents minimize, 7 represents maximize
                 特别地，1为最小，7为最大
         """ 
+        sleep(1)
         self.S('button.fontSizeButton').click()
+        sleep(1)
         self.S(f'.vue-slider-mark:nth-child({font_size_index})').click()
         self.S('.app_content').click()
 
@@ -185,16 +192,18 @@ class WeRead:
         jpg_name_list = []
 
         while True:
+            sleep(1)
+
             # get chapter
             chapter = self.S('span.readerTopBar_title_chapter').text
             print(f'scanning chapter "{chapter}"')
 
             # locate the renderTargetContent
-            context = self.S('div.readerChapterContent')
+            context = self.S('div.app_content')
 
             # context_scan2png
             png_name = f'wrs-temp/{book_name}/context/{chapter}'
-            self.shot_full_displayed_element(context, f'{png_name}.png')
+            self.shot_full_canvas_context(f'{png_name}.png')
 
             # png2bin-jpg
             jpg_name = png2jpg(png_name, binary_threshold, quality)
