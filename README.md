@@ -1,6 +1,6 @@
 # WeReadScan
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/c00b1cc6fa3245668bbda64584479f9d)](https://app.codacy.com/manual/Algebra-FUN/WeReadScan?utm_source=github.com&utm_medium=referral&utm_content=Algebra-FUN/WeReadScan&utm_campaign=Badge_Grade_Dashboard) ![GitHub last commit](https://img.shields.io/github/last-commit/Algebra-FUN/WeReadScan) ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/Algebra-FUN/WeReadScan) ![GitHub top language](https://img.shields.io/github/languages/top/Algebra-FUN/WeReadScan) [![pip](https://img.shields.io/badge/pip-0.7.0-orange)](https://pypi.org/project/WeReadScan/)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/c00b1cc6fa3245668bbda64584479f9d)](https://app.codacy.com/manual/Algebra-FUN/WeReadScan?utm_source=github.com&utm_medium=referral&utm_content=Algebra-FUN/WeReadScan&utm_campaign=Badge_Grade_Dashboard) ![GitHub last commit](https://img.shields.io/github/last-commit/Algebra-FUN/WeReadScan) ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/Algebra-FUN/WeReadScan) ![GitHub top language](https://img.shields.io/github/languages/top/Algebra-FUN/WeReadScan) [![pip](https://img.shields.io/badge/pip-0.8.3-orange)](https://pypi.org/project/WeReadScan/)
 
 ## About
 

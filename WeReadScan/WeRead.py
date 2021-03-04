@@ -9,7 +9,7 @@ from PIL import Image
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.remote.webdriver import WebDriver
 
-from .script import jpg2pdf, png2jpg, dir_check, os_start_file, clear_temp
+from .script import img2pdf, dir_check, os_start_file, clear_temp
 
 from time import sleep
 
@@ -53,22 +53,39 @@ class WeRead:
     def S(self, selector):
         return WebDriverWait(self.driver, 60).until(lambda driver: driver.find_element_by_css_selector(selector))
 
-    def execute_script(self,script):
-        return self.driver.execute_script(script)
-
-    def shot_full_canvas_context(self,file_name):
-        sleep(1)
-        try:
-            self.__offsetTop = self.execute_script("return document.querySelector('.renderTargetContainer').offsetTop")
-            self.__offsetHeight = self.execute_script("return document.querySelector('.renderTargetContainer').offsetHeight")
-        except Exception:
-            pass
-        width = self.execute_script("return window.outerWidth")
-        self.__offsetHeight += self.__offsetTop
-        self.driver.set_window_size(width, self.__offsetHeight)
+    def shot_full_canvas_context(self, file_name):
+        renderTargetContainer = self.S('.renderTargetContainer')
+        height = renderTargetContainer.get_property('offsetHeight')
+        height += renderTargetContainer.get_property('offsetTop')
+        width = self.driver.execute_script("return window.outerWidth")
+        self.driver.set_window_size(width, height)
         sleep(1)
         content = self.S('.app_content')
         content.screenshot(file_name)
+
+    def check_all_image_loaded(self, frequency=10, max_wait_duration=30):
+        """
+        check if all image is loaded.
+
+        检查图书Image是否全部加载完毕.
+        """
+        interval = 1/frequency
+
+        try:
+            img_unloaded = WebDriverWait(self.driver, 3).until(
+                lambda driver: driver.find_elements_by_css_selector('img.wr_absolute'))
+        except Exception:
+            return False
+
+        for _ in range(frequency*max_wait_duration):
+            sleep(interval)
+            for img in img_unloaded:
+                if img.get_property('complete'):
+                    img_unloaded.remove(img)
+            if not len(img_unloaded):
+                self.debug_mode and print('all image is loaded!')
+                return True
+        return False
 
     def login(self, wait_turns=15):
         """
@@ -119,8 +136,8 @@ class WeRead:
         """switch to main body of the book"""
         self.S('button.catalog').click()
         self.S('li.chapterItem:nth-child(2)').click()
-    
-    def set_font_size(self,font_size_index=1):
+
+    def set_font_size(self, font_size_index=1):
         """
         set font size
 
@@ -132,7 +149,7 @@ class WeRead:
                 字体大小级别(1-7)
                 In particular, 1 represents minimize, 7 represents maximize
                 特别地，1为最小，7为最大
-        """ 
+        """
         sleep(1)
         self.S('button.fontSizeButton').click()
         sleep(1)
@@ -200,8 +217,8 @@ class WeRead:
         # check the dir for future save
         dir_check(f'wrs-temp/{book_name}/context')
 
-        # used to store jpg_name for pdf converting
-        jpg_name_list = []
+        # used to store png_name for pdf converting
+        png_name_list = []
 
         while True:
             sleep(1)
@@ -213,14 +230,15 @@ class WeRead:
             # locate the renderTargetContent
             context = self.S('div.app_content')
 
+            # check all image loaded
+            self.check_all_image_loaded()
+
             # context_scan2png
             png_name = f'wrs-temp/{book_name}/context/{chapter}'
             self.shot_full_canvas_context(f'{png_name}.png')
 
-            # png2bin-jpg
-            jpg_name = png2jpg(png_name, binary_threshold, quality)
-            jpg_name_list.append(jpg_name)
-            print(f'save chapter scan {jpg_name}')
+            png_name_list.append(png_name)
+            print(f'save chapter scan {png_name}')
 
             # go to next chapter
             try:
@@ -231,7 +249,7 @@ class WeRead:
         print('pdf converting...')
 
         # convert to pdf and save offline
-        jpg2pdf(f'{save_at}/{book_name}', jpg_name_list)
+        img2pdf(f'{save_at}/{book_name}', png_name_list)
         print('scanning finished.')
         if show_output:
             os_start_file(f'{save_at}/{book_name}.pdf')
