@@ -31,6 +31,7 @@ from WeReadScan import WeRead
 # 重要！为webdriver设置headless
 chrome_options = ChromeOptions()
 chrome_options.add_argument('--headless')
+chrome_options.add_argument('--window-size=1440,900')
 
 # 启动webdriver(--headless)
 headless_driver = Chrome(options=chrome_options)
@@ -39,7 +40,7 @@ with WeRead(headless_driver) as weread:
     # 重要！登陆
     weread.login()
     # 爬去指定url对应的图书资源并保存到当前文件夹
-    weread.scan2pdf('https://weread.qq.com/web/reader/2c632ef071a486a92c60226')
+    weread.scan2pdf('https://weread.qq.com/web/reader/2c632ef071a486a92c60226', keep_color=True)
 ```
 
 扫描结果样例：
@@ -94,7 +95,7 @@ weread.login()
 
 ### Scan2pdf
 
-WeReadScan.WeRead.scan2pdf(self, book_url, save_at='.', binary_threshold=95, quality=90, show_output=True,font_size_index=1)
+WeReadScan.WeRead.scan2pdf(self, book_url, save_at='.', binary_threshold=95, keep_color=True, show_output=True,font_size_index=1)
 
 扫面`微信读书`的书籍转换为PDF并保存本地
 
@@ -105,7 +106,7 @@ WeReadScan.WeRead.scan2pdf(self, book_url, save_at='.', binary_threshold=95, qua
 | book_url         | str  | 必填   | 扫描目标书籍的URL            |
 | save_at          | str  | '.'  | 保存地址                  |
 | binary_threshold | int  | 200   | 二值化处理的阈值              |
-| quality          | int  | 95   | 扫描PDF的质量              |
+| keep_color          | bool  | False   | 是否保持原色，或者转换成黑白模式           |
 | show_output      | bool | True | 是否在该方法函数结束时展示生成的PDF文件 |
 | font_size_index  | int  | 1 | 设置字号大小(对应微信读书字号) |
 

@@ -4,3 +4,4 @@ matplotlib
 img2pdf 
 opencv-python
 selenium
+PyPDF2
