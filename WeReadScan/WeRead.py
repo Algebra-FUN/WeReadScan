@@ -156,12 +156,12 @@ class WeRead:
                 split_img = img.crop((0, last_split_offset, img.width, split_offset))
                 split_img.save(f"{png_name}_{img_index}.png")
                 last_split_offset = split_offset
-                split_pngs.append(f"{png_name}_{img_index}")
+                split_pngs.append((f"{png_name}_{img_index}", split_offset - last_split_offset))
                 img_index = img_index + 1
 
         last_img = img.crop((0, last_split_offset, img.width, img.height))
         last_img.save(f"{png_name}_{img_index}.png")
-        split_pngs.append(f"{png_name}_{img_index}")
+        split_pngs.append((f"{png_name}_{img_index}", img.height - last_split_offset))
         return split_pngs
 
     # return largest element in arr, which is less then x
@@ -236,15 +236,15 @@ class WeRead:
         for i in range(1, len(chapterItem_links)): 
             chap_level = int(re.match( r'.*chapterItem_level(\d+)', chapterItem_links[i].get_attribute('class'), re.M|re.I).group(1))
             chap_name = chapterItem_links[i].text
-            toc.append((chap_name, chap_level, 0))
+            toc.append((chap_name, chap_level, 0, 0))
         self.S('li.chapterItem:nth-child(2)').click()
         return toc
 
-    def refresh_toc_per_chapter(self, chapter_name, toc, start_page):
+    def refresh_toc_per_chapter(self, chapter_name, toc, start_page, start_page_height):
         try:
             chapter_idx = list(zip(*toc))[0].index(chapter_name)
             for i in range(chapter_idx, len(toc)):
-                toc[i] = (toc[i][0], toc[i][1], start_page)
+                toc[i] = (toc[i][0], toc[i][1], start_page, start_page_height)
             return flag
         except:
             return toc
@@ -359,9 +359,9 @@ class WeRead:
             split_pngs = self.remove_header_and_split_long_page(png_name)
 
             # store toc
-            toc = self.refresh_toc_per_chapter(chapter, toc, len(png_name_list))
+            toc = self.refresh_toc_per_chapter(chapter, toc, len(png_name_list), list(zip(*split_pngs))[1][0])
 
-            png_name_list.extend(split_pngs)
+            png_name_list.extend(list(zip(*split_pngs))[0])
             print(f'save chapter scan {png_name}')
 
             # go to next chapter
@@ -374,6 +374,8 @@ class WeRead:
 
         # convert to pdf and save offline
         img2pdf(f'{save_at}/{book_name}', png_name_list, binary_threshold, keep_color)
+        if self.debug_mode:
+            print(f"Book ToC: {toc}")
         addBookmark2pdf(f'{save_at}/{book_name}', toc)
         print(f'Scanning finished at {time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())}')
         if show_output:

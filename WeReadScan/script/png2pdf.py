@@ -36,9 +36,9 @@ def addBookmark2pdf(file_name, toc):
     chapter_stack = []
     for item in toc:
         if item[1] <= 1:
-            bookmarkRef = pdf.addBookmark(item[0], item[2])
+            bookmarkRef = pdf.addBookmark(item[0], item[2], None, None, False, False, '/FitH', item[3])
         else:
-            bookmarkRef = pdf.addBookmark(item[0], item[2], chapter_stack[item[1] - 2])
+            bookmarkRef = pdf.addBookmark(item[0], item[2], chapter_stack[item[1] - 2], None, False, False, '/FitH', item[3])
         if len(chapter_stack) < item[1]:
             chapter_stack.append(bookmarkRef)
         else:
