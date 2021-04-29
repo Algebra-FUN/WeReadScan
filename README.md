@@ -33,9 +33,10 @@ chrome_options = ChromeOptions()
 chrome_options.add_argument('--headless')
 
 # 启动webdriver(--headless)
-headless_driver = Chrome(options=chrome_options)
+headless_driver = Chrome(options=chrome_options)de
 
-with WeRead(headless_driver) as weread:
+# debug 模式启动，可以保留png缓存
+with WeRead(headless_driver,debug=True) as weread:
     # 重要！登陆
     weread.login()
     # 爬去指定url对应的图书资源并保存到当前文件夹
