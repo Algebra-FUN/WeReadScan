@@ -33,7 +33,7 @@ chrome_options = ChromeOptions()
 chrome_options.add_argument('--headless')
 
 # 启动webdriver(--headless)
-headless_driver = Chrome(options=chrome_options)de
+headless_driver = Chrome(options=chrome_options)
 
 # debug 模式启动，可以保留png缓存
 with WeRead(headless_driver,debug=True) as weread:
