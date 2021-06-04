@@ -120,3 +120,8 @@ weread.scan2pdf('https://weread.qq.com/web/reader/a57325c05c8ed3a57224187kc81322
 
 -   本脚本仅限用于**已购**图书的爬取，用于私人学习目的，禁止用于商业目的和网上资源扩散，尊重微信读书方面的利益
 -   若User使用该脚本用于不当的目的，责任由使用者承担，作者概不负责
+
+## Stargazers over time
+
+[![Stargazers over time](https://starchart.cc/Algebra-FUN/WeReadScan.svg)](https://starchart.cc/Algebra-FUN/WeReadScan)
+      
