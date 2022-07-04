@@ -31,6 +31,9 @@ from WeReadScan import WeRead
 # 重要！为webdriver设置headless
 chrome_options = ChromeOptions()
 chrome_options.add_argument('--headless')
+chrome_options.add_argument("--disable-blink-features=AutomationControlled")
+chrome_options.add_argument('disable-infobars')
+chrome_options.add_argument('log-level=3')
 
 # 启动webdriver(--headless)
 headless_driver = Chrome(options=chrome_options)
