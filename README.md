@@ -1,6 +1,6 @@
 # WeReadScan
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/c00b1cc6fa3245668bbda64584479f9d)](https://app.codacy.com/manual/Algebra-FUN/WeReadScan?utm_source=github.com&utm_medium=referral&utm_content=Algebra-FUN/WeReadScan&utm_campaign=Badge_Grade_Dashboard) ![GitHub last commit](https://img.shields.io/github/last-commit/Algebra-FUN/WeReadScan) ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/Algebra-FUN/WeReadScan) ![GitHub top language](https://img.shields.io/github/languages/top/Algebra-FUN/WeReadScan) [![pip](https://img.shields.io/badge/pip-0.8.3-orange)](https://pypi.org/project/WeReadScan/)
+![GitHub last commit](https://img.shields.io/github/last-commit/Algebra-FUN/WeReadScan) ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/Algebra-FUN/WeReadScan) ![GitHub top language](https://img.shields.io/github/languages/top/Algebra-FUN/WeReadScan) [![pip](https://img.shields.io/badge/pip-0.8.3-orange)](https://pypi.org/project/WeReadScan/)
 
 ## About
 
@@ -31,11 +31,15 @@ from WeReadScan import WeRead
 # 重要！为webdriver设置headless
 chrome_options = ChromeOptions()
 chrome_options.add_argument('--headless')
+chrome_options.add_argument("--disable-blink-features=AutomationControlled")
+chrome_options.add_argument('disable-infobars')
+chrome_options.add_argument('log-level=3')
 
 # 启动webdriver(--headless)
 headless_driver = Chrome(options=chrome_options)
 
-with WeRead(headless_driver) as weread:
+# debug 模式启动，可以保留png缓存
+with WeRead(headless_driver,debug=True) as weread:
     # 重要！登陆
     weread.login()
     # 爬去指定url对应的图书资源并保存到当前文件夹
@@ -119,3 +123,8 @@ weread.scan2pdf('https://weread.qq.com/web/reader/a57325c05c8ed3a57224187kc81322
 
 -   本脚本仅限用于**已购**图书的爬取，用于私人学习目的，禁止用于商业目的和网上资源扩散，尊重微信读书方面的利益
 -   若User使用该脚本用于不当的目的，责任由使用者承担，作者概不负责
+
+## Stargazers over time
+
+[![Stargazers over time](https://starchart.cc/Algebra-FUN/WeReadScan.svg)](https://starchart.cc/Algebra-FUN/WeReadScan)
+      
