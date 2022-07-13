@@ -22,6 +22,6 @@ print('Webdriver launching...')
 driver = Chrome(options=chrome_options)
 print('Webdriver launched.')
 
-with WeRead(driver) as weread:
+with WeRead(driver,debug=True) as weread:
     weread.login() #? login for grab the whole book
-    weread.scan2pdf('https://weread.qq.com/web/reader/50532a905cde3050538da2b')
+    weread.scan2pdf('https://weread.qq.com/web/reader/60b32c107207bc8960bd9cekecc32f3013eccbc87e4b62e')

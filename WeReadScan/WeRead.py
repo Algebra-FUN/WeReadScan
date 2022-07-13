@@ -6,13 +6,13 @@ ALL RIGHTS RESERVED.
 
 from matplotlib import pyplot as plt
 from PIL import Image
+from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.remote.webdriver import WebDriver
 
 from .script import img2pdf, dir_check, os_start_file, clear_temp
 
 from time import sleep
-
 
 class WeRead:
     """
@@ -51,7 +51,7 @@ class WeRead:
             clear_temp('wrs-temp')
 
     def S(self, selector):
-        return WebDriverWait(self.driver, 60).until(lambda driver: driver.find_element_by_css_selector(selector))
+        return WebDriverWait(self.driver, 60).until(lambda driver: driver.find_element(By.CSS_SELECTOR,selector))
 
     def shot_full_canvas_context(self, file_name):
         renderTargetContainer = self.S('.renderTargetContainer')
@@ -73,7 +73,7 @@ class WeRead:
 
         try:
             img_unloaded = WebDriverWait(self.driver, 3).until(
-                lambda driver: driver.find_elements_by_css_selector('img.wr_absolute'))
+                lambda driver: driver.find_elements(By.CSS_SELECTOR,'img.wr_absolute'))
         except Exception:
             return False
 
@@ -120,7 +120,7 @@ class WeRead:
         for i in range(wait_turns):
             print(f'Wait for QRCode Scan...{i}/{wait_turns}turns')
             try:
-                self.driver.find_element_by_css_selector('.menu_container')
+                self.driver.find_element(By.CSS_SELECTOR,'.menu_container')
                 print('Login Succeed.')
                 break
             except Exception:
@@ -253,3 +253,4 @@ class WeRead:
         print('scanning finished.')
         if show_output:
             os_start_file(f'{save_at}/{book_name}.pdf')
+            

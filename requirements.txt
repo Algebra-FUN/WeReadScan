@@ -1,6 +1,5 @@
 pillow
 numpy
 matplotlib
-img2pdf 
 opencv-python
 selenium
