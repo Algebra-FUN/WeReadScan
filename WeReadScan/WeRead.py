@@ -14,6 +14,7 @@ from .script import img2pdf, dir_check, os_start_file, clear_temp
 
 from time import sleep
 
+
 class WeRead:
     """
         The agency who control `WeRead` web page with selenium webdriver to processing book scanning.
@@ -51,7 +52,10 @@ class WeRead:
             clear_temp('wrs-temp')
 
     def S(self, selector):
-        return WebDriverWait(self.driver, 60).until(lambda driver: driver.find_element(By.CSS_SELECTOR,selector))
+        return WebDriverWait(self.driver, 60).until(lambda driver: driver.find_element(By.CSS_SELECTOR, selector))
+
+    def click(self,target):
+        self.driver.execute_script('arguments[0].click();', target)
 
     def shot_full_canvas_context(self, file_name):
         renderTargetContainer = self.S('.renderTargetContainer')
@@ -73,7 +77,7 @@ class WeRead:
 
         try:
             img_unloaded = WebDriverWait(self.driver, 3).until(
-                lambda driver: driver.find_elements(By.CSS_SELECTOR,'img.wr_absolute'))
+                lambda driver: driver.find_elements(By.CSS_SELECTOR, 'img.wr_absolute'))
         except Exception:
             return False
 
@@ -120,7 +124,7 @@ class WeRead:
         for i in range(wait_turns):
             print(f'Wait for QRCode Scan...{i}/{wait_turns}turns')
             try:
-                self.driver.find_element(By.CSS_SELECTOR,'.menu_container')
+                self.driver.find_element(By.CSS_SELECTOR, '.menu_container')
                 print('Login Succeed.')
                 break
             except Exception:
@@ -160,7 +164,7 @@ class WeRead:
         sleep(1)
         self.S('button.readerControls_item.white').click()
 
-    def scan2pdf(self, book_url, save_at='.', binary_threshold=200, quality=95, show_output=True, font_size_index=1):
+    def scan2pdf(self, book_url, save_at='.', binary_threshold=200, quality=100, show_output=True, font_size_index=1):
         """
         scan `weread` book to pdf and save offline.
 
@@ -220,6 +224,8 @@ class WeRead:
         # used to store png_name for pdf converting
         png_name_list = []
 
+        page = 1
+
         while True:
             sleep(1)
 
@@ -234,23 +240,37 @@ class WeRead:
             self.check_all_image_loaded()
 
             # context_scan2png
-            png_name = f'wrs-temp/{book_name}/context/{chapter}'
+            png_name = f'wrs-temp/{book_name}/context/{chapter}_{page}'
             self.shot_full_canvas_context(f'{png_name}.png')
 
             png_name_list.append(png_name)
             print(f'save chapter scan {png_name}')
 
-            # go to next chapter
+            # find next page or chapter button
             try:
-                self.S('button[title="下一章"]').click()
+                next_btn = self.S('button.readerFooter_button')
             except Exception:
                 break
+
+            next_btn_text = next_btn.text.strip()
+
+            if next_btn_text == "下一页":
+                print("go to next page")
+                page += 1
+            elif next_btn_text == "下一章":
+                print("go to next chapter")
+                page = 1
+            else:
+                raise Exception("Unexpected Exception")
+
+            # go to next page or chapter
+            next_btn.click()
 
         print('pdf converting...')
 
         # convert to pdf and save offline
-        img2pdf(f'{save_at}/{book_name}', png_name_list)
+        img2pdf(f'{save_at}/{book_name}', png_name_list,
+                binary_threshold=binary_threshold, quality=quality)
         print('scanning finished.')
         if show_output:
             os_start_file(f'{save_at}/{book_name}.pdf')
-            
