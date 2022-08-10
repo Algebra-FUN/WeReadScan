@@ -1,6 +1,6 @@
 # WeReadScan
 
-![GitHub last commit](https://img.shields.io/github/last-commit/Algebra-FUN/WeReadScan) ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/Algebra-FUN/WeReadScan) ![GitHub top language](https://img.shields.io/github/languages/top/Algebra-FUN/WeReadScan) [![pip](https://img.shields.io/badge/pip-0.8.4-orange)](https://pypi.org/project/WeReadScan/)
+![GitHub last commit](https://img.shields.io/github/last-commit/Algebra-FUN/WeReadScan) ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/Algebra-FUN/WeReadScan) ![GitHub top language](https://img.shields.io/github/languages/top/Algebra-FUN/WeReadScan) [![pip](https://img.shields.io/badge/pip-0.8.5-orange)](https://pypi.org/project/WeReadScan/)
 
 ## About
 
@@ -109,7 +109,7 @@ WeReadScan.WeRead.scan2pdf(self, book_url, save_at='.', binary_threshold=95, qua
 | book_url         | str  | 必填   | 扫描目标书籍的URL            |
 | save_at          | str  | '.'  | 保存地址                  |
 | binary_threshold | int  | 200   | 二值化处理的阈值              |
-| quality          | int  | 95   | 扫描PDF的质量              |
+| quality          | int  | 100   | 扫描PDF的质量              |
 | show_output      | bool | True | 是否在该方法函数结束时展示生成的PDF文件 |
 | font_size_index  | int  | 1 | 设置字号大小(对应微信读书字号) |
 
