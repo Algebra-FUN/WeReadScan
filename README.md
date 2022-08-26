@@ -4,7 +4,11 @@
 
 ## About
 
-一个用于的将`微信读书`上的图书扫描转换本地PDF的爬虫库.
+This branch is a html-scan variant of WeReadScan, integrating script developed by Secant.
+
+Thanks for Secant, this variant of WeReadScan can be more efficient.
+
+More detail about Secant's project, you can visit https://github.com/Sec-ant/weread-scraper
 
 ### 谈谈为何而开发
 

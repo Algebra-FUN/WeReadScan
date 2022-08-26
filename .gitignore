@@ -10,3 +10,4 @@ temp*.py
 *.bat
 test
 .vscode
+*.html
