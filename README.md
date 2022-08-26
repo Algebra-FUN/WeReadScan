@@ -4,9 +4,9 @@
 
 ## About
 
-This branch is a html-scan variant of WeReadScan, integrating script developed by [Secant](https://github.com/Sec-ant).
+This branch is a html-scan variant of WeReadScan, integrating script developed by [Sec-ant](https://github.com/Sec-ant).
 
-Thanks for [Secant](https://github.com/Sec-ant), this variant of WeReadScan can be more efficient.
+Thanks for [Sec-ant](https://github.com/Sec-ant), this variant of WeReadScan can be more efficient.
 
-More detail about Secant's project, you can visit https://github.com/Sec-ant/weread-scraper
+More detail about Sec-ant's project, you can visit https://github.com/Sec-ant/weread-scraper
       
