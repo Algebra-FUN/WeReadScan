@@ -192,6 +192,7 @@ class WeRead:
             f.write(html)
         if show_output:
             os_start_file(save_path)
+        return save_path
 
     def scan2html(self, book_url, save_at='.', show_output=True):
         html = self.get_html(book_url)
