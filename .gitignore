@@ -1,6 +1,6 @@
 __pycache__
 test*
-setup.py
+setup*.py
 wrs-temp/
 *.pdf
 dist/
