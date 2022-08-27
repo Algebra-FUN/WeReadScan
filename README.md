@@ -12,11 +12,23 @@
 
 因此，既然“微信读书”没有提供，那只好自己解决了。于是，经过2天的开发，终于有了这个爬虫脚本，也可以开心地做手写笔记了o(_￣▽￣_)ブ
 
+### 相关版本
+
+在[Sec-ant](https://github.com/Sec-ant)的建议下，参考了他的解决方案[weread-scraper](https://github.com/Sec-ant/weread-scraper)，将其中最重要的获取#preRenderContent的部分脚本进行整合，得到了[WeReadScan-HTML](https://github.com/Algebra-FUN/WeReadScan/tree/html-variant)版本，可以直接自动化获得多本图书的HTML，更加高效。
+
 ## Get started
 
+### WeReadScan(原始版本)
 ```shell
 pip install WeReadScan
 ```
+
+### WeReadScan-HTML(html-scrape version)
+```shell
+pip install WeReadScan-HTML
+```
+
+> 使用WeReadScan-HTML这个版本请访问 https://github.com/Algebra-FUN/WeReadScan/tree/html-variant
 
 > 本项目需要使用selenium，需要对selenium具备基础的了解
 
