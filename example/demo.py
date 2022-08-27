@@ -14,7 +14,7 @@ from WeReadScan import WeRead
 chrome_options = ChromeOptions()
 
 # now you can choose headless or not
-# chrome_options.add_argument('--headless')  
+chrome_options.add_argument('--headless')  
  
 chrome_options.add_argument("--disable-blink-features=AutomationControlled")
 chrome_options.add_argument('disable-infobars')
