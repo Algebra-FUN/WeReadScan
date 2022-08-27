@@ -1,0 +1,1 @@
+styleElement.innerHTML = "";bodyElement.innerHTML = "";

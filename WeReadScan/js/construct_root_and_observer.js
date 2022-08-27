@@ -4,6 +4,7 @@
 // @description  Export Weread books to html file
 // @author       Secant
 
+// construct html root
 const rootElement = document.createElement("html");
 const styleElement = document.createElement("style");
 const bodyElement = document.createElement("body");

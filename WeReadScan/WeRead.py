@@ -23,7 +23,7 @@ class WeRead:
         `微信读书`网页代理，用于图书扫描
 
         :Args:
-         - headless_driver:
+         - driver:
                 Webdriver instance with headless option set.
                 设置了headless的Webdriver示例
 
@@ -31,24 +31,21 @@ class WeRead:
          - WeReadInstance
 
         :Usage:
-            chrome_options = ChromeOptions()
-            chrome_options.add_argument('--headless')
+            driver = Chrome()
 
-            headless_driver = Chrome(chrome_options=chrome_options)
-
-            weread = WeRead(headless_driver)
+            weread = WeRead(driver)
     """
 
     current_book_name = ''
+    _js_store = {}
 
-    def __init__(self, headless_driver: WebDriver, patience=15, debug=False):
-        headless_driver.get('https://weread.qq.com/')
-        headless_driver.implicitly_wait(5)
-        self.driver: WebDriver = headless_driver
+    def __init__(self, driver: WebDriver, patience=15, debug=False):
+        driver.get('https://weread.qq.com/')
+        driver.implicitly_wait(5)
+        self.driver: WebDriver = driver
         self.debug_mode = debug
         self.patience = patience
         self.path = os.path.dirname(os.path.realpath(__file__))
-        self.inject_js = self.load_js_file('inject')
 
     def __enter__(self):
         return self
@@ -57,9 +54,16 @@ class WeRead:
         if not self.debug_mode:
             clear_temp('wrs-temp')
 
-    def load_js_file(self, name):
-        with open(f'{self.path}\\script\\{name}.js','r',encoding='utf-8') as f:
-            return f.read()
+    def load_js(self, name):
+        if name in self._js_store:
+            return self._js_store[name]
+        with open(f'{self.path}\\js\\{name}.js','r',encoding='utf-8') as f:
+            js = f.read()
+            self._js_store[name] = js
+            return js
+
+    def use_js(self,name):
+        return self.driver.execute_script(self.load_js(name))
 
     def S(self, selector):
         return WebDriverWait(self.driver, self.patience).until(lambda driver: driver.find_element(By.CSS_SELECTOR, selector))
@@ -127,32 +131,20 @@ class WeRead:
         self.S('button.catalog').click()
         self.S('li.chapterItem:nth-child(2)').click()
 
-    def inject_observer_js(self):
-        self.driver.execute_cdp_cmd(
-            'Page.addScriptToEvaluateOnNewDocument', {'source': self.inject_js})
-
-    def observer_start(self):
-        js = '''
-        contentObserver.observe(document.documentElement, {
-            childList: true,
-            subtree: true,
-        });
-        '''
-        self.driver.execute_script(js)
-
     def get_html(self, book_url):
         # valid the url
         if 'https://weread.qq.com/web/reader/' not in book_url:
             raise Exception('WeRead.UrlError: Wrong url format.')
 
-        # inject observer js
-        self.inject_observer_js()
+        # construct root html and observer 
+        self.driver.execute_cdp_cmd(
+            'Page.addScriptToEvaluateOnNewDocument', {'source': self.load_js('construct_root_and_observer')})
 
         # switch to target book url
         self.driver.get(book_url)
 
-        # init observer
-        self.observer_start()
+        # start observation
+        self.use_js('start_observation')
 
         # switch to target book's cover
         self.switch_to_context()
@@ -176,10 +168,9 @@ class WeRead:
             # go to next page or chapter
             readerFooter.click()
 
-        self.driver.execute_script("contentObserver.disconnect()")
+        self.use_js('observer_disconnect')
         html = self.driver.execute_script("return rootElement.outerHTML")
-        self.driver.execute_script(
-            'styleElement.innerHTML = "";bodyElement.innerHTML = "";')
+        self.use_js('clean_root_element')
 
         return html
 
