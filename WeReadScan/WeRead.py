@@ -38,10 +38,11 @@ class WeRead:
             weread = WeRead(headless_driver)
     """
 
-    def __init__(self, headless_driver: WebDriver, debug=False):
+    def __init__(self, headless_driver: WebDriver, patience=30, debug=False):
         headless_driver.get('https://weread.qq.com/')
         headless_driver.implicitly_wait(5)
         self.driver: WebDriver = headless_driver
+        self.patience = patience
         self.debug_mode = debug
 
     def __enter__(self):
@@ -52,7 +53,7 @@ class WeRead:
             clear_temp('wrs-temp')
 
     def S(self, selector):
-        return WebDriverWait(self.driver, 60).until(lambda driver: driver.find_element(By.CSS_SELECTOR, selector))
+        return WebDriverWait(self.driver, self.patience).until(lambda driver: driver.find_element(By.CSS_SELECTOR, selector))
 
     def click(self,target):
         self.driver.execute_script('arguments[0].click();', target)
@@ -248,11 +249,17 @@ class WeRead:
 
             # find next page or chapter button
             try:
-                next_btn = self.S('button.readerFooter_button')
+                readerFooter = self.S('.readerFooter_button,.readerFooter_ending')
             except Exception:
                 break
+            
+            readerFooterClass = readerFooter.get_attribute('class')
 
-            next_btn_text = next_btn.text.strip()
+            # quick ending
+            if 'ending' in readerFooterClass:
+                break
+
+            next_btn_text = readerFooter.text.strip()
 
             if next_btn_text == "下一页":
                 print("go to next page")
@@ -264,7 +271,7 @@ class WeRead:
                 raise Exception("Unexpected Exception")
 
             # go to next page or chapter
-            next_btn.click()
+            readerFooter.click()
 
         print('pdf converting...')
 
