@@ -10,7 +10,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.remote.webdriver import WebDriver
 
-from .script import img2pdf, dir_check, os_start_file, clear_temp
+from .script import img2pdf, dir_check, os_start_file, clear_temp, escape
 
 from time import sleep
 
@@ -55,7 +55,7 @@ class WeRead:
     def S(self, selector):
         return WebDriverWait(self.driver, self.patience).until(lambda driver: driver.find_element(By.CSS_SELECTOR, selector))
 
-    def click(self,target):
+    def click(self, target):
         self.driver.execute_script('arguments[0].click();', target)
 
     def shot_full_canvas_context(self, file_name):
@@ -216,7 +216,7 @@ class WeRead:
         self.switch_to_context()
 
         # get the name of the book
-        book_name = self.S('span.readerTopBar_title_link').text
+        book_name = escape(self.S('span.readerTopBar_title_link').text)
         print(f'preparing to scan "{book_name}"')
 
         # check the dir for future save
@@ -231,7 +231,7 @@ class WeRead:
             sleep(1)
 
             # get chapter
-            chapter = self.S('span.readerTopBar_title_chapter').text
+            chapter = escape(self.S('span.readerTopBar_title_chapter').text)
             print(f'scanning chapter "{chapter}"')
 
             # locate the renderTargetContent
@@ -249,10 +249,11 @@ class WeRead:
 
             # find next page or chapter button
             try:
-                readerFooter = self.S('.readerFooter_button,.readerFooter_ending')
+                readerFooter = self.S(
+                    '.readerFooter_button,.readerFooter_ending')
             except Exception:
                 break
-            
+
             readerFooterClass = readerFooter.get_attribute('class')
 
             # quick ending

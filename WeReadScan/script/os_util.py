@@ -6,6 +6,7 @@ ALL RIGHTS RESERVED.
 
 import os
 import shutil
+import re
 
 
 def dir_check(dir):
@@ -19,3 +20,6 @@ def os_start_file(file_name):
 
 def clear_temp(file_name):
     shutil.rmtree(file_name)
+
+def escape(file_name):
+    return re.sub(r"[\/\\\:\*\?\"\<\>\|]",'_',file_name)
