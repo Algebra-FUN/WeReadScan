@@ -44,8 +44,6 @@ options.add_argument('disable-infobars')
 options.add_argument('log-level=3')
 options.add_argument("headless")
 
-# service = Service("/Users/creator/Downloads/msedgedriver")
-
 # launch Webdriver
 print('Webdriver launching...')
 driver = Edge(options=options)
