@@ -18,17 +18,9 @@
 
 ## Get started
 
-### WeReadScan(原始版本)
-```shell
-pip install WeReadScan
-```
-
-### WeReadScan-HTML(html-scrape version)
 ```shell
 pip install WeReadScan-HTML
 ```
-
-> 使用WeReadScan-HTML这个版本请访问 https://github.com/Algebra-FUN/WeReadScan/tree/html-variant
 
 > 本项目需要使用selenium，需要对selenium具备基础的了解
 
@@ -37,25 +29,28 @@ pip install WeReadScan-HTML
 话不多说，直接上代码
 
 ```python
-from selenium.webdriver import Chrome, ChromeOptions
+from selenium.webdriver import Edge
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.edge.options import Options
+
 from WeReadScan import WeRead
 
-# 重要！为webdriver设置headless
-chrome_options = ChromeOptions()
-chrome_options.add_argument('--headless')
-chrome_options.add_argument("--disable-blink-features=AutomationControlled")
-chrome_options.add_argument('disable-infobars')
-chrome_options.add_argument('log-level=3')
+options = Options()
+options.add_argument("--disable-blink-features=AutomationControlled")
+options.add_argument('disable-infobars')
+options.add_argument('log-level=3')
+options.add_argument("headless")
 
-# 启动webdriver(--headless)
-headless_driver = Chrome(options=chrome_options)
+# launch Webdriver
+print('Webdriver launching...')
+driver = Edge(options=options)
+# driver = Edge(service=service, options=options)
+print('Webdriver launched.')
 
-# debug 模式启动，可以保留png缓存
-with WeRead(headless_driver,debug=True) as weread:
-    # 重要！登陆
-    weread.login()
-    # 爬去指定url对应的图书资源并保存到当前文件夹
-    weread.scan2pdf('https://weread.qq.com/web/reader/2c632ef071a486a92c60226')
+with WeRead(driver,debug=True) as weread:
+    weread.login() #? login for grab the whole book
+    weread.scan2html('https://weread.qq.com/web/reader/2c632ef071a486a92c60226kc81322c012c81e728d9d180')
+    weread.scan2html('https://weread.qq.com/web/reader/a9c32f40717db77aa9c9171kc81322c012c81e728d9d180')
 ```
 
 扫描结果样例：
