@@ -23,20 +23,11 @@ pip install WeReadScan-HTML
 Talk is cheap, just show you the code.
 
 ```python
-"""
-demo.py
-The demo of WeReadScan.py
-Copyright 2023 by Algebra-FUN
-ALL RIGHTS RESERVED.
-"""
-
-
 from selenium.webdriver import Edge
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.edge.options import Options
 
 from WeReadScan import WeRead
-
 
 options = Options()
 options.add_argument("--disable-blink-features=AutomationControlled")
