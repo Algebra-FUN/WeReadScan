@@ -6,6 +6,7 @@ ALL RIGHTS RESERVED.
 
 import os
 import shutil
+import sys
 
 
 def dir_check(dir):
@@ -15,7 +16,15 @@ def dir_check(dir):
         pass
 
 def os_start_file(file_name):
-    os.system(f'start {file_name}')
+    commands = {
+        'linux1' : 'xdg-open',
+        'linux2' : 'xdg-open',
+        'darwin' : 'open',
+        'win32' : 'start'
+    }
+    if sys.platform in commands.keys():
+        command = commands[sys.platform]
+        os.system(f'{command} "{file_name}"')
 
 def clear_temp(file_name):
     shutil.rmtree(file_name)

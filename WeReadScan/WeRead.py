@@ -9,6 +9,7 @@ from PIL import Image
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.remote.webdriver import WebDriver
+from selenium.common.exceptions import StaleElementReferenceException
 
 from .script import dir_check, os_start_file, clear_temp
 
@@ -57,7 +58,7 @@ class WeRead:
     def load_js(self, name):
         if name in self._js_store:
             return self._js_store[name]
-        with open(f'{self.path}\\js\\{name}.js','r',encoding='utf-8') as f:
+        with open(f'{self.path}/js/{name}.js','r',encoding='utf-8') as f:
             js = f.read()
             self._js_store[name] = js
             return js
@@ -126,6 +127,8 @@ class WeRead:
         plt.ioff()
         plt.close()
 
+        sleep(5)
+
     def switch_to_context(self):
         """switch to main body of the book"""
         self.S('button.catalog').click()
@@ -159,14 +162,18 @@ class WeRead:
                 readerFooter = self.S('.readerFooter_button,.readerFooter_ending')
             except Exception:
                 break
-            
-            readerFooterClass = readerFooter.get_attribute('class')
 
-            if 'ending' in readerFooterClass:
-                break
+            try:
+                readerFooterClass = readerFooter.get_attribute('class')
 
-            # go to next page or chapter
-            readerFooter.click()
+                if 'ending' in readerFooterClass:
+                    break
+
+                # go to next page or chapter
+                readerFooter.click()
+            except StaleElementReferenceException:
+                # if element be stale, then relocate manually
+                continue
 
         self.use_js('observer_disconnect')
         html = self.driver.execute_script("return rootElement.outerHTML")
