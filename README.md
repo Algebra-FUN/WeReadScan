@@ -26,7 +26,7 @@ Talk is cheap, just show you the code.
 """
 demo.py
 The demo of WeReadScan.py
-Copyright 2020 by Algebra-FUN
+Copyright 2023 by Algebra-FUN
 ALL RIGHTS RESERVED.
 """
 
@@ -44,12 +44,12 @@ options.add_argument('disable-infobars')
 options.add_argument('log-level=3')
 options.add_argument("headless")
 
-service = Service("/Users/creator/Downloads/msedgedriver")
+# service = Service("/Users/creator/Downloads/msedgedriver")
 
 # launch Webdriver
 print('Webdriver launching...')
-driver = Edge(service=service, options=options)
-# driver = Chrome(options=chrome_options)
+driver = Edge(options=options)
+# driver = Edge(service=service, options=options)
 print('Webdriver launched.')
 
 with WeRead(driver,debug=True) as weread:

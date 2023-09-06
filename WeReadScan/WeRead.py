@@ -1,6 +1,6 @@
 '''
 WeRead.py
-Copyright 2020 by Algebra-FUN
+Copyright 2023 by Algebra-FUN
 ALL RIGHTS RESERVED.
 '''
 
