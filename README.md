@@ -24,6 +24,9 @@ pip install WeReadScan-HTML
 
 > 本项目需要使用selenium，需要对selenium具备基础的了解
 
+> 由于原PDF版本受网络影响较大且不稳定, 所以原版本目前暂停维护, 推荐使用HTML版本. 
+> 而且既然你都能上GitHub了, 那访问z-library应该也不成问题, 直接下载英文书籍, 不比从微信读书爬方便(除非是看中文小说之类的)
+
 ### Demo
 
 话不多说，直接上代码
@@ -103,9 +106,9 @@ WeReadScan.WeRead.login(wait_turns=15)
 weread.login()
 ```
 
-### Scan2pdf
+### Scan2html
 
-WeReadScan.WeRead.scan2pdf(self, book_url, save_at='.', binary_threshold=95, quality=90, show_output=True,font_size_index=1)
+WeReadScan.WeRead.scan2html(self, book_url, save_at='.', show_output=True)
 
 扫面`微信读书`的书籍转换为PDF并保存本地
 
@@ -115,15 +118,12 @@ WeReadScan.WeRead.scan2pdf(self, book_url, save_at='.', binary_threshold=95, qua
 | ---------------- | ---- | ---- | --------------------- |
 | book_url         | str  | 必填   | 扫描目标书籍的URL            |
 | save_at          | str  | '.'  | 保存地址                  |
-| binary_threshold | int  | 200   | 二值化处理的阈值              |
-| quality          | int  | 100   | 扫描PDF的质量              |
 | show_output      | bool | True | 是否在该方法函数结束时展示生成的PDF文件 |
-| font_size_index  | int  | 1 | 设置字号大小(对应微信读书字号) |
 
 #### Usage
 
 ```python
-weread.scan2pdf('https://weread.qq.com/web/reader/a57325c05c8ed3a57224187kc81322c012c81e728d9d180')
+weread.scan2html('https://weread.qq.com/web/reader/a57325c05c8ed3a57224187kc81322c012c81e728d9d180')
 ```
 
 ## Disclaimer
