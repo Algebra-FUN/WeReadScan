@@ -108,7 +108,7 @@ weread.login()
 
 ### Scan2html
 
-WeReadScan.WeRead.scan2html(self, book_url, save_at='.', show_output=True)
+WeReadScan.WeRead.scan2html(book_url, save_at='.', show_output=True)
 
 扫面`微信读书`的书籍转换为PDF并保存本地
 
