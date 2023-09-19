@@ -24,9 +24,6 @@ pip install WeReadScan-HTML
 
 > 本项目需要使用selenium，需要对selenium具备基础的了解
 
-> 由于原PDF版本受网络影响较大且不稳定, 所以原版本目前暂停维护, 推荐使用HTML版本. 
-> 而且既然你都能上GitHub了, 那访问z-library应该也不成问题, 直接下载英文书籍, 不比从微信读书爬方便(除非是看中文小说之类的)
-
 ### Demo
 
 话不多说，直接上代码
